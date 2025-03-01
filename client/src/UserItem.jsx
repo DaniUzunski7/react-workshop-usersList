@@ -1,4 +1,5 @@
-export function UserItem() {
+export function UserItem(props) {
+    
     return (
         
         <tr>
@@ -9,8 +10,8 @@ export function UserItem() {
             className="image"
           />
         </td>
-        <td>Peter</td>
-        <td>Johnson</td>
+        <td>{props.firstName}</td>
+        <td>{props.lastName}</td>
         <td>peter@abv.bg</td>
         <td>0812345678</td>
         <td>June 28, 2022</td>

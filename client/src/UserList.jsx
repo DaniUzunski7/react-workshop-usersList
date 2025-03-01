@@ -6,9 +6,13 @@ import UserServices from "./services/UserServices";
 
 export function UserList() {
     
+    const [users, setUsers] = useState([]);
+
     useEffect(() => {
         const userData = UserServices.getAll()
             .then( result => {
+                setUsers(result);
+                console.log(result);
                 
             })
     }, []);
@@ -170,7 +174,7 @@ export function UserList() {
             </tr>
           </thead>
           <tbody>
-            <UserItem />
+            {users.map( user => <UserItem key={user._id} {...user}/>)}
           </tbody>
         </table>
       </div>
