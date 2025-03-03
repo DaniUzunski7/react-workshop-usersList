@@ -12,8 +12,6 @@ export function UserList() {
         const userData = UserServices.getAll()
             .then( result => {
                 setUsers(result);
-                console.log(result);
-                
             })
     }, []);
 
