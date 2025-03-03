@@ -4,10 +4,13 @@ import { Search } from "./Search";
 import { UserItem } from "./UserItem";
 import UserServices from "./services/UserServices";
 import { UserCreate } from "./userCreate";
+import {UserDetails} from "./UserDetails"
 
 export function UserList() {
   const [users, setUsers] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [userDetails, setUserDetails] = useState();
 
   useEffect(() => {
     const userData = UserServices.getAll().then((result) => {
@@ -15,6 +18,7 @@ export function UserList() {
     });
   }, []);
 
+  //Add user modal
   const addUserClickHandler = () => {
     setShowCreate(true);
   };
@@ -37,6 +41,17 @@ export function UserList() {
     setShowCreate(false);
   };
 
+  //User details modal
+  const showDetailsClickHandler = async (userId) => {
+    setUserDetails(userId);
+    
+    setShowDetails(true);
+  }
+
+  const hideDetailsHandler = () => {
+    setShowDetails(false);
+  }
+
   return (
     <section className="card users-container">
       <Search />
@@ -45,8 +60,15 @@ export function UserList() {
         <UserCreate 
             onClose={addUserCloseHandler} 
             onSave={saveNewUserHandler}
-            />}
+        />}
 
+        {showDetails && 
+            <UserDetails 
+               onClose={hideDetailsHandler}
+               userId={userDetails}
+            />
+        }
+        
       <div className="table-wrapper">
         <div>
           {/* <!-- Overlap components  --> */}
@@ -200,7 +222,7 @@ export function UserList() {
           </thead>
           <tbody>
             {users.map((user) => (
-              <UserItem key={user._id} {...user} />
+              <UserItem key={user._id} {...user} onInfoClick={showDetailsClickHandler}/>
             ))}
           </tbody>
         </table>

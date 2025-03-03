@@ -1,12 +1,14 @@
 import { dateFormat } from "./utils/dateFormat";
 
 export function UserItem({
+    _id,
     firstName,
     lastName,
     email,
     phoneNumber,
     createdAt,
     imageUrl,
+    onInfoClick
 }) {
     
     return (
@@ -60,7 +62,7 @@ export function UserItem({
               ></path>
             </svg>
           </button>
-          <button className="btn info-btn" title="Info">
+          <button className="btn info-btn" title="Info" onClick={() => onInfoClick(_id)}>
             <svg
               aria-hidden="true"
               focusable="false"

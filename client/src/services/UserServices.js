@@ -37,7 +37,17 @@ async function createUser(userData) {
     return result;
 }
 
+async function getOne(id){
+    
+    const response = await fetch(`${url}/${id}`);
+
+    const result = await response.json();
+    
+    return result;    
+}
+
 export default {
   getAll,
-  createUser
+  createUser,
+  getOne
 };
