@@ -5,12 +5,14 @@ import { UserItem } from "./UserItem";
 import UserServices from "./services/UserServices";
 import { UserCreate } from "./userCreate";
 import {UserDetails} from "./UserDetails"
+import { UserDelete } from "./UserDelete";
 
 export function UserList() {
   const [users, setUsers] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [userDetails, setUserDetails] = useState();
+  const [showDelete, setShowDelete] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
     const userData = UserServices.getAll().then((result) => {
@@ -18,7 +20,7 @@ export function UserList() {
     });
   }, []);
 
-  //Add user modal
+  //Add user
   const addUserClickHandler = () => {
     setShowCreate(true);
   };
@@ -41,15 +43,34 @@ export function UserList() {
     setShowCreate(false);
   };
 
-  //User details modal
-  const showDetailsClickHandler = async (userId) => {
-    setUserDetails(userId);
+  //User details
+  const showDetailsClickHandler = (userId) => {
+    setUserDetails(userId)
     
     setShowDetails(true);
   }
 
   const hideDetailsHandler = () => {
     setShowDetails(false);
+  }
+
+  //User delete
+  const userDeleteHandler = (userId) => {
+    setUserDetails(userId);
+
+    setShowDelete(true);
+  }
+
+  const hideUserDeleteHandler = () => {
+    setShowDelete(false);
+  }
+
+  const deleteUserHandler = async () => {
+     await UserServices.deleteUser(userDetails)
+
+     setUsers(state => state.filter(user => user._id !== userDetails));
+
+     setShowDelete(false)
   }
 
   return (
@@ -66,6 +87,13 @@ export function UserList() {
             <UserDetails 
                onClose={hideDetailsHandler}
                userId={userDetails}
+            />
+        }
+
+        {showDelete && 
+            <UserDelete 
+               onClose={hideUserDeleteHandler}
+               onDelete={deleteUserHandler}
             />
         }
         
@@ -222,7 +250,12 @@ export function UserList() {
           </thead>
           <tbody>
             {users.map((user) => (
-              <UserItem key={user._id} {...user} onInfoClick={showDetailsClickHandler}/>
+              <UserItem 
+                key={user._id} 
+                {...user} 
+                onInfoClick={showDetailsClickHandler}
+                onDeleteClick={userDeleteHandler}
+                />
             ))}
           </tbody>
         </table>

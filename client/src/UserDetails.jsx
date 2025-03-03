@@ -13,7 +13,6 @@ export function UserDetails({
         UserServices.getOne(userId)
             .then((result) => {setUser(result)})
     }, [userId]);
-    console.log(user);
     
     return (
       <div className="overlay">

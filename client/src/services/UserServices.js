@@ -46,8 +46,19 @@ async function getOne(id){
     return result;    
 }
 
+async function deleteUser(id) {
+    const response = await fetch(`${url}/${id}`, {
+        method: 'DELETE',
+    });
+
+    const result = await response.json();
+
+    return result;
+}
+
 export default {
   getAll,
   createUser,
-  getOne
+  getOne,
+  deleteUser
 };
