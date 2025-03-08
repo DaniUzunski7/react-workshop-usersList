@@ -648,6 +648,9 @@ ul {
 .table-overlap {
   text-align: center;
   margin-right: 30px;
+  position: absolute;
+  left: 45%;
+  top: 200px;
 }
 
 .loading-shade svg {

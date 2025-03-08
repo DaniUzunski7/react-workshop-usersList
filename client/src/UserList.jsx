@@ -15,6 +15,7 @@ export function UserList() {
   const [showDelete, setShowDelete] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [userIdEdit, setUserIdEdit] = useState(null);
+  const [noUsers, setNoUsers] = useState(false);
 
   useEffect(() => {
     const userData = UserServices.getAll().then((result) => {
@@ -22,6 +23,17 @@ export function UserList() {
     });
   }, []);
 
+  useEffect( () => {
+
+    if(users.length < 1){
+        setNoUsers(true)
+    } else if (users.length >= 1){
+        setNoUsers(false);
+    }
+    console.log(noUsers);
+    
+  }, [users])
+  
   //Add user
   const addUserClickHandler = () => {
     setShowCreate(true);
@@ -128,7 +140,8 @@ export function UserList() {
               onClose={addUserCloseHandler}
               userId={userIdEdit}
               onEdit={editUserHander}
-            />}
+        />}
+
         
       <div className="table-wrapper">
         <div>
@@ -162,6 +175,7 @@ export function UserList() {
          
         </div>
 
+        {noUsers && <NoContent/>}
         <table className="table">
           <thead>
             <tr>
