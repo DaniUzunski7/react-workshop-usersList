@@ -56,9 +56,34 @@ async function deleteUser(id) {
     return result;
 }
 
+async function updateUser(id, newUserData) {
+    const oldData = await getOne(id);
+    
+    const {country, city, street, streetNumber, ...newData} = newUserData;
+
+    newData.address = {country, city, street, streetNumber}
+    newData._id = id;
+    newData.createdAt = oldData.createdAt;
+    newData.updatedAt = new Date().toISOString()
+
+    
+    const response = await fetch(`${url}/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(newData)
+    });
+
+    const result = await response.json();
+    
+    return result;
+}
+
 export default {
   getAll,
   createUser,
   getOne,
-  deleteUser
+  deleteUser,
+  updateUser
 };

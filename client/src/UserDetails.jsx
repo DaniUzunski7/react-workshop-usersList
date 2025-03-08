@@ -20,7 +20,7 @@ export function UserDetails({
         <div className="modal">
           <div className="detail-container">
             <header className="headers">
-              <h2>User Detail</h2>
+              <h2>User Details</h2>
               <button className="btn close" onClick={onClose}>
                 <svg
                   aria-hidden="true"
@@ -42,8 +42,8 @@ export function UserDetails({
             <div className="content">
               <div className="image-container">
                 <img
-                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                  alt=""
+                  src={user.imageUrl}
+                  alt={user.firstName}
                   className="image"
                 />
               </div>

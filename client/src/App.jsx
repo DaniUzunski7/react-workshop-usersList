@@ -9,8 +9,7 @@ function App() {
   return (
     <>
         <Header />
-
-        {/* <!-- Main component  --> */}
+        
         <main className="main">
           <UserList />
         </main>
