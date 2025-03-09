@@ -11,25 +11,23 @@ async function getAll() {
 }
 
 async function createUser(userData) {
+    const {country, city, street, streetNumber, ...data} = userData;
 
-    const payload = {
-        ...userData,
-        address: {
-            country: userData.country,
-            city: userData.city,
-            street: userData.street,
-            streetNumber: userData.streetNumber,
+        data.address = {
+            country,
+            city,
+            street,
+            streetNumber
         },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-    }
+        data.createdAt = new Date().toISOString(),
+        data.updatedAt = new Date().toISOString()
 
     const response = await fetch(url, {
         method: 'POST',
         headers: {
             "Content-type": "application/json"
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
     });
 
     const result = await response.json();
@@ -85,5 +83,5 @@ export default {
   createUser,
   getOne,
   deleteUser,
-  updateUser
+  updateUser,
 };
