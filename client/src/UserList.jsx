@@ -22,6 +22,9 @@ export function UserList() {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage, setUsersPerPage] = useState(5);
+
   useEffect(() => {
     const userData = UserServices.getAll()
         .then((result) => {
@@ -121,6 +124,11 @@ export function UserList() {
     setUserIdEdit(null);
     setShowCreate(false);
   }
+
+  //Pagination
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const usersToShow = users.slice(startIndex, endIndex);
 
   return (
     <section className="card users-container">
@@ -259,7 +267,7 @@ export function UserList() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {usersToShow.map((user) => (
               <UserItem 
                 key={user._id} 
                 {...user} 
@@ -276,7 +284,13 @@ export function UserList() {
         Add new user
       </button>
 
-      <Pagination />
+      <Pagination 
+        totalUsers ={users.length}
+        usersPerPage={usersPerPage}
+        currPage={currentPage}
+        onPageChange={setCurrentPage}
+        onLimitChange={setUsersPerPage}
+      />
     </section>
   );
 }
