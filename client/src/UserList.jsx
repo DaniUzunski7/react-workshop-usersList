@@ -8,6 +8,7 @@ import { UserDetails } from "./userDetails";
 import { UserDelete } from "./UserDelete";
 import { NoContent } from "./NoContent";
 import { LoadingShade } from "./LoadingShade";
+import { NoMatch } from "./NoMatch";
 
 export function UserList() {
   const [users, setUsers] = useState([]);
@@ -25,6 +26,8 @@ export function UserList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(5);
 
+  const [noMatch, setNoMatch] = useState(false);
+
   useEffect(() => {
     const userData = UserServices.getAll()
         .then((result) => {
@@ -37,6 +40,14 @@ export function UserList() {
             setNoUsers(true)
         })
   }, []);
+
+  useEffect( () => {
+    if (users.length < 1){
+        setNoUsers(true)
+    } else {
+        setNoUsers(false)
+    }
+  }, [users])
   
   //Add user
   const addUserClickHandler = () => {
@@ -124,6 +135,7 @@ export function UserList() {
       <Search 
         users={users}
         onSearch={setUsers}
+        NotMatching={setNoMatch}
       />
 
       {isLoading && <LoadingShade/>}
@@ -151,124 +163,126 @@ export function UserList() {
 
         {userIdEdit && 
             <UserCreate
-              onClose={addUserCloseHandler}
-              userId={userIdEdit}
-              onEdit={editUserHander}
-        />}
+            onClose={addUserCloseHandler}
+            userId={userIdEdit}
+            onEdit={editUserHander}
+            />}
 
         
       <div className="table-wrapper">
-        <div>
-        </div>
-         <table className="table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>
-                First name
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="arrow-down"
-                  className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
-                  ></path>
-                </svg>
-              </th>
-              <th>
-                Last name
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="arrow-down"
-                  className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
-                  ></path>
-                </svg>
-              </th>
-              <th>
-                Email
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="arrow-down"
-                  className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
-                  ></path>
-                </svg>
-              </th>
-              <th>
-                Phone
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="arrow-down"
-                  className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
-                  ></path>
-                </svg>
-              </th>
-              <th>
-                Created
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fas"
-                  data-icon="arrow-down"
-                  className="icon active-icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
-                  ></path>
-                </svg>
-              </th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {noUsers
-                ? <NoContent />
-                :  usersToShow.map((user) => (
-                  <UserItem key={user._id} {...user} 
-                    onInfoClick={showDetailsClickHandler}
-                    onDeleteClick={userDeleteHandler}
-                    onEditClick={showUserEditHandler} />
-                ))
+
+            {noMatch 
+                ? <NoMatch />
+                : <table className="table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>
+                      First name
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="arrow-down"
+                        className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        >
+                        <path
+                          fill="currentColor"
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                          ></path>
+                      </svg>
+                    </th>
+                    <th>
+                      Last name
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="arrow-down"
+                        className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        >
+                        <path
+                          fill="currentColor"
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                        ></path>
+                      </svg>
+                    </th>
+                    <th>
+                      Email
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="arrow-down"
+                        className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        >
+                        <path
+                          fill="currentColor"
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                          ></path>
+                      </svg>
+                    </th>
+                    <th>
+                      Phone
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="arrow-down"
+                        className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        >
+                        <path
+                          fill="currentColor"
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                          ></path>
+                      </svg>
+                    </th>
+                    <th>
+                      Created
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="arrow-down"
+                        className="icon active-icon svg-inline--fa fa-arrow-down Table_icon__+HHgn"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        >
+                        <path
+                          fill="currentColor"
+                          d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z"
+                          ></path>
+                      </svg>
+                    </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {noUsers
+                      ? <NoContent />
+                      :  usersToShow.map((user) => (
+                          <UserItem key={user._id} {...user} 
+                          onInfoClick={showDetailsClickHandler}
+                          onDeleteClick={userDeleteHandler}
+                          onEditClick={showUserEditHandler} />
+                      ))
+                  }
+                </tbody>
+                  </table> 
             }
-          </tbody>
-        </table>
       </div>
 
       <button className="btn-add btn" onClick={addUserClickHandler}>

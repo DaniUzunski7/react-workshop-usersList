@@ -653,6 +653,14 @@ ul {
   top: 200px;
 }
 
+.table-overlap2 {
+  text-align: center;
+  max-width: fit-content;
+  max-height: fit-content;
+  position:absolute;
+  left: 33%;
+}
+
 .loading-shade svg {
   font-size: 5rem;
   color: #943232;
