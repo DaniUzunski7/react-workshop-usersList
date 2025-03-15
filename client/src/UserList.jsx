@@ -4,7 +4,7 @@ import { Search } from "./Search";
 import { UserItem } from "./UserItem";
 import UserServices from "./services/UserServices";
 import { UserCreate } from "./userCreate";
-import {UserDetails} from "./UserDetails"
+import { UserDetails } from "./userDetails";
 import { UserDelete } from "./UserDelete";
 import { NoContent } from "./NoContent";
 import { LoadingShade } from "./LoadingShade";
@@ -34,20 +34,9 @@ export function UserList() {
         .catch( (error) => {
             console.log('Error fetching users:', error);
             setIsLoading(false);
+            setNoUsers(true)
         })
   }, []);
-
-  useEffect( () => {
-
-    if(users.length < 1){
-        setNoUsers(true)
-    } 
-    
-    if (users.length >= 1){
-        setNoUsers(false);
-    }
-    
-  }, [users])
   
   //Add user
   const addUserClickHandler = () => {
@@ -132,7 +121,10 @@ export function UserList() {
 
   return (
     <section className="card users-container">
-      <Search />
+      <Search 
+        users={users}
+        onSearch={setUsers}
+      />
 
       {isLoading && <LoadingShade/>}
 
@@ -168,8 +160,7 @@ export function UserList() {
       <div className="table-wrapper">
         <div>
         </div>
-        {noUsers && <NoContent/>}
-        <table className="table">
+         <table className="table">
           <thead>
             <tr>
               <th>Image</th>
@@ -267,15 +258,15 @@ export function UserList() {
             </tr>
           </thead>
           <tbody>
-            {usersToShow.map((user) => (
-              <UserItem 
-                key={user._id} 
-                {...user} 
-                onInfoClick={showDetailsClickHandler}
-                onDeleteClick={userDeleteHandler}
-                onEditClick={showUserEditHandler}
-                />
-            ))}
+            {noUsers
+                ? <NoContent />
+                :  usersToShow.map((user) => (
+                  <UserItem key={user._id} {...user} 
+                    onInfoClick={showDetailsClickHandler}
+                    onDeleteClick={userDeleteHandler}
+                    onEditClick={showUserEditHandler} />
+                ))
+            }
           </tbody>
         </table>
       </div>
